@@ -1,0 +1,44 @@
+
+DELETE http://localhost:9500/awesome-names
+
+###
+
+PUT http://localhost:9500/awesome-names
+content-type: application/json
+
+{
+  "mappings": {
+    "dynamic": false,
+    "properties": {
+      "id": {
+        "type": "keyword"
+      },
+      "title": {
+        "type": "text",
+        "analyzer": "lowercase_ascii"
+      }
+    }
+  },
+  "settings": {
+    "refresh_interval": "1s",
+    "analysis": {
+      "analyzer": {
+        "lowercase_ascii": {
+          "type": "custom",
+          "tokenizer": "standard",
+          "filter": [
+            "lowercase",
+            "asciifolding"
+          ]
+        }
+      }
+    }
+  }
+}
+
+###
+
+POST http://localhost:9500/_bulk
+content-type: application/json
+
+< ./bulk-content

@@ -1,0 +1,106 @@
+
+DELETE http://localhost:9500/awesome-names
+
+###
+
+PUT http://localhost:9500/awesome-names
+content-type: application/json
+
+{
+  "mappings": {
+    "dynamic": false,
+    "properties": {
+      "title": {
+        "type": "text",
+        "analyzer":"lowercase_ascii_ngram",
+        "search_analyzer": "lowercase_ascii"
+      }
+    }
+  },
+  "settings": {
+    "number_of_replicas": 2,
+    "number_of_shards": 3,
+    "refresh_interval": "1s",
+    "index": {
+      "max_ngram_diff": 4
+    },
+    "analysis": {
+      "analyzer": {
+        "lowercase_ascii": {
+          "type": "custom",
+          "tokenizer": "standard",
+          "filter": [
+            "lowercase",
+            "asciifolding"
+          ]
+        },
+        "lowercase_ascii_edge_ngram": {
+          "type": "custom",
+          "tokenizer": "standard",
+          "filter": [
+            "lowercase",
+            "asciifolding",
+            "1_12_edge_ngram"
+          ]
+        },
+        "lowercase_ascii_ngram": {
+          "type": "custom",
+          "tokenizer": "standard",
+          "filter": [
+            "lowercase",
+            "asciifolding",
+            "3_7_grams"
+          ]
+        },
+        "my_analyzer": {
+          "type": "custom",
+          "char_filter": [
+            "html_strip",
+            "&_to_and"
+          ],
+          "tokenizer": "standard",
+          "filter": [
+            "lowercase",
+            "my_stopwords"
+          ]
+        }
+      },
+      "char_filter": {
+        "&_to_and": {
+          "type": "mapping",
+          "mappings": [
+            "&=> and "
+          ]
+        }
+      },
+      "filter": {
+        "1_12_edge_ngram": {
+          "type": "edge_ngram",
+          "min_gram": "1",
+          "max_gram": "12",
+          "preserve_original": true
+        },
+        "3_7_grams": {
+          "type": "ngram",
+          "min_gram": 3,
+          "max_gram": 7,
+          "preserve_original": true
+        },
+        "my_stopwords": {
+          "type": "stop",
+          "stopwords": [
+            "the",
+            "a"
+          ]
+        }
+      }
+    }
+  }
+}
+
+###
+
+POST http://localhost:9500/_bulk
+content-type: application/json
+
+< ./bulk-content

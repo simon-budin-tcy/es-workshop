@@ -1,0 +1,9 @@
+<main class="flex flex-col">
+  <h1>Elasticsearch playground</h1>
+</main>
+<p-tabMenu
+  [model]="routeItems"
+  [activeItem]="activeItem"
+  (activeItemChange)="onActiveItemChange($event)"
+/>
+<router-outlet class="m-4" />

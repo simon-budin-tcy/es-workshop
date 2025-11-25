@@ -1,0 +1,31 @@
+<form [formGroup]="formGroup!" class="mt-8 flex w-full items-center">
+  <p-floatLabel class="w-2/5">
+    <p-dropdown
+      [options]="analyzers"
+      formControlName="selectedAnalyzer"
+      optionLabel="name"
+      optionValue="code"
+      placeholder="Select an analyzer"
+    />
+    <label for="analyzerName">Analyzer</label>
+  </p-floatLabel>
+  <p-floatLabel class="ml-2 w-3/5">
+    <input
+      id="analyzedText"
+      type="text"
+      pInputText
+      formControlName="analyzedText"
+      class="w-full"
+    />
+    <label for="analyzedText">Analyzed text</label>
+  </p-floatLabel>
+</form>
+<div class="w-1/2 mt-2">
+  <p-chip
+    *ngFor="let token of tokens"
+    styleClass="mt-1"
+    [label]="token"
+    class="ml-1"
+  />
+</div>
+<!--  -->

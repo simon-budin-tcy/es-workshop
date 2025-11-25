@@ -1,0 +1,123 @@
+<div class="mt-8 flex flex-wrap gap-3 items-center">
+  <p-floatLabel>
+    <input
+      id="analyzeName"
+      type="text"
+      pInputText
+      [(ngModel)]="idQuery"
+      (input)="searchIdHandler()"
+    />
+    <label for="analyzeName">Id search (term search)</label>
+  </p-floatLabel>
+</div>
+<div class="mt-8 flex flex-wrap gap-3 items-center">
+  <p-floatLabel>
+    <input
+      id="analyzeName"
+      type="text"
+      pInputText
+      [(ngModel)]="query"
+      (input)="searchHandler()"
+    />
+    <label for="analyzeName">Title search</label>
+  </p-floatLabel>
+  <div class="flex align-items-center">
+    <p-radioButton
+      inputId="match"
+      value="match"
+      [(ngModel)]="searchType"
+      (onClick)="searchHandler()"
+    />
+    <label for="match" class="ml-2"> Match </label>
+  </div>
+
+  <div class="flex align-items-center">
+    <p-radioButton
+      inputId="term"
+      value="term"
+      [(ngModel)]="searchType"
+      (onClick)="searchHandler()"
+    />
+    <label for="term" class="ml-2"> Term </label>
+  </div>
+
+  <div class="flex align-items-center">
+    <p-radioButton
+      inputId="wildcard"
+      value="wildcard"
+      [(ngModel)]="searchType"
+      (onClick)="searchHandler()"
+    />
+    <label for="wildcard" class="ml-2"> Wildcard [*query*] </label>
+  </div>
+
+  <div class="flex align-items-center">
+    <p-radioButton
+      inputId="queryString"
+      value="queryString"
+      [(ngModel)]="searchType"
+      (onClick)="searchHandler()"
+    />
+    <label for="wildcard" class="ml-2"> Query string </label>
+  </div>
+  <div class="flex align-items-center">
+    <p-radioButton
+      inputId="match-fuzzy"
+      value="match-fuzzy"
+      [(ngModel)]="searchType"
+      (onClick)="searchHandler()"
+    />
+    <label for="match" class="ml-2"> Match + fuzzy </label>
+  </div>
+</div>
+<p-table
+  [value]="results"
+  [tableStyle]="{ 'min-width': '50rem' }"
+  styleClass="p-datatable-sm mt-4"
+>
+  <ng-template pTemplate="header">
+    <tr>
+      <th>Id</th>
+      <th>Title</th>
+      <th pSortableColumn="score">
+        Score
+        <p-sortIcon field="score" />
+      </th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-thing>
+    <tr>
+      <td>
+        <span
+          class="p-1"
+          [class]="{
+            'bg-green-500': thing.isIdGreen,
+            'text-gray-400': !thing.isIdGreen,
+            'text-white': thing.isIdGreen
+          }"
+        >
+          {{ thing.id }}
+        </span>
+      </td>
+      <td>
+        <span
+          class="p-1"
+          [class]="{
+            'bg-green-500': thing.isTitleGreen,
+            'text-gray-400': !thing.isTitleGreen,
+            'text-white': thing.isTitleGreen
+          }"
+        >
+          {{ thing.title }}</span
+        >
+      </td>
+      <td
+        [class]="{
+            'text-gray-400': !thing.isTitleGreen,
+          }"
+      >
+        {{ thing.score }}
+      </td>
+    </tr>
+  </ng-template>
+</p-table>

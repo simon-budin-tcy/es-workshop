@@ -1,0 +1,79 @@
+
+DELETE http://localhost:9500/awesome-names
+
+###
+
+PUT http://localhost:9500/awesome-names
+content-type: application/json
+
+{
+  "mappings": {
+    "dynamic": false,
+    "properties": {
+      "id": {
+        "type": "keyword"
+      },
+      "title": {
+        "type": "text",
+        "analyzer": "lowercase_ascii_ngram"
+      }
+    }
+  },
+  "settings": {
+    "index": {
+      "max_ngram_diff": 4
+    },
+    "refresh_interval": "1s",
+    "analysis": {
+      "analyzer": {
+        "lowercase_ascii": {
+          "type": "custom",
+          "tokenizer": "standard",
+          "filter": [
+            "lowercase",
+            "asciifolding"
+          ]
+        },
+        "lowercase_ascii_ngram": {
+          "type": "custom",
+          "tokenizer": "standard",
+          "filter": [
+            "lowercase",
+            "asciifolding",
+            "3_7_grams"
+          ]
+        },
+        "lowercase_ascii_edge_ngram": {
+          "type": "custom",
+          "tokenizer": "standard",
+          "filter": [
+            "lowercase",
+            "asciifolding",
+            "1_12_edge_ngram"
+          ]
+        }
+      },
+      "filter": {
+        "3_7_grams": {
+          "type": "ngram",
+          "min_gram": 3,
+          "max_gram": 7,
+          "preserve_original": true
+        },
+        "1_12_edge_ngram": {
+          "type": "edge_ngram",
+          "min_gram": "1",
+          "max_gram": "12",
+          "preserve_original": true
+        }
+      }
+    }
+  }
+}
+
+###
+
+POST http://localhost:9500/_bulk
+content-type: application/json
+
+< ./bulk-content
