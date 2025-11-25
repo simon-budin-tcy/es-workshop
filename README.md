@@ -4,6 +4,8 @@ This project is an angular application used in a demo talking about analysis in 
 
 This is supposed to be used in conjunction with the excalidraw at https://excalidraw.com/#room=752d1d439f587fd0eaf9,P9DqwabQvzs8dmRE4OnODA
 
+<img width="1531" height="1006" alt="image" src="https://github.com/user-attachments/assets/f910839e-8e06-4e6f-8b68-bd756946badf" />
+
 
 ## Running the angular demo application
 
